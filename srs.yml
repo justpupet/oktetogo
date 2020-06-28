@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: srsgo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: srsgo
+  template:
+    metadata:
+      labels:
+        app: srsgo
+    spec:
+      containers:
+      - image: registry.gitlab.com/jonaswa/plsfuckme:srsgo
+        name: srsgo
+        resources:
+          limits:
+            cpu: "1"
+            memory: 1024Mi
+---
+ 
+apiVersion: v1
+kind: Service
+metadata:
+  name: srsgo
+  annotations:
+    dev.okteto.com/auto-ingress: "true"
+spec:
+  type: ClusterIP  
+  ports:
+  - name: "http-port-tcp"
+    port: 8080
+  selector:
+    app: srsgo
+ 
+     
+     
